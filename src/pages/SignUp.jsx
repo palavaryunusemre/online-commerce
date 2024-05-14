@@ -18,7 +18,7 @@ export default function SignUp() {
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required')
   })
   const submitHandler = (values) => {
-    let userService = new UserService
+    let userService = new UserService    
     userService.userAdd(values).then(response => setMessage(response.data.message))
   }
   

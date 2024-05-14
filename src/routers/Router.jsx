@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import ProductDetail from '../pages/ProductDetail'
 import CartDetail from '../pages/CartDetail'
 import ProductAdd from '../pages/ProductAdd'
-import SingUp from '../pages/SingUp'
+import SignUp from '../pages/SignUp'
 
 
 export default function
@@ -17,7 +17,7 @@ export default function
                 <Route path="/products/:name" element={<ProductDetail />}></Route>
                 <Route path="/cart" element={<CartDetail />}></Route>
                 <Route path="/product/add" element={<ProductAdd />}></Route>
-                <Route path="/signUp" element={<SingUp />}></Route>
+                <Route path="/signUp" element={<SignUp />}></Route>
             </Routes>
         </div>
     )
