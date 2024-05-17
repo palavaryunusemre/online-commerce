@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import user_icon from '../components/assets/person.png'
 import email_icon from '../components/assets/email.png'
@@ -11,18 +11,28 @@ import UserService from '../services/userService'
 
 export default function SignUp() {
   const [message, setMessage] = useState("")
+  const [messageStatus, setMessageStatus] = useState("")
   const initialValues = { userName: "", email: "", password: "" }
   const schema = Yup.object({
     userName: Yup.string().required('User Name is required'),
     email: Yup.string().email('Invalid email').required('Email Address is required'),
-    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required')
+    password: Yup.string().min(12, 'Password must be at least 12 characters').required('Password is required')
   })
   const submitHandler = (values) => {
-    let userService = new UserService    
-    userService.userAdd(values).then(response => setMessage(response.data.message))
+    let userService = new UserService()
+    userService.userAdd(values).then(response => { setMessage(response.data.message); setMessageStatus(response.data.success) })
   }
-  
-  
+  const generatePassword = (setFieldValue) => {
+    const charset = "!@#$%^&*()0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    let newPassword = ""
+    const passwordLength = 12
+
+    for (let i = 0; i < passwordLength; i++) {
+      newPassword += charset.charAt(Math.floor(Math.random() * charset.length))
+    }
+
+    setFieldValue("password", newPassword)
+  };
   return (
     <div className='singUp'>
       <div className='container'>
@@ -33,16 +43,19 @@ export default function SignUp() {
         <Formik
           initialValues={initialValues}
           validationSchema={schema}
-          onSubmit={(values) => submitHandler(values)}
+          onSubmit={(values) => submitHandler(values)
+          }
         >
-          <Form className='ui form'>
-            <YepSignUpInputs name="userName" src={user_icon} type='text' alt="user_icon" placeholder="User Name" />
-            <YepSignUpInputs name="email" src={email_icon} type="text" alt="email_icon" placeholder="E-mail Address" />
-            <YepSignUpInputs name="password" src={password_icon} type='password' alt="password" placeholder="Password" />
-            {message && <Label>{message}</Label>}<br/>
-            <Button className="submit" type="submit" inverted color='green'>Submit</Button>
-          </Form>
+          {({ setFieldValue }) => (
+            <Form className='ui form'>
+              <YepSignUpInputs name="userName" src={user_icon} type='text' alt="user_icon" placeholder="User Name" />
+              <YepSignUpInputs name="email" src={email_icon} type="text" alt="email_icon" placeholder="E-mail Address" />
+              <YepSignUpInputs name="password" src={password_icon} type='text' alt="password" readOnly btnType="button" btnOnClick={() => generatePassword(setFieldValue)} btnText="Generate Password"/>
+              <Button className="submit" type="submit">Submit</Button>
+            </Form>
+          )}
         </Formik>
+        <br />{message && <Label className="lblMessage" tag color={messageStatus ? "green" : "red"}>{message}</Label>}
       </div>
     </div>
   )
