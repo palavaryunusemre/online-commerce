@@ -6,10 +6,12 @@ import { Formik, Form } from 'formik'
 import { Button } from 'semantic-ui-react'
 import * as Yup from "yup"
 import UserService from '../services/userService'
+import { useNavigate } from 'react-router-dom'
 
 export default function LogIn() {
     const [message, setMessage] = useState("")
     const initialValues = { email: "", password: "" }
+    const navigate = useNavigate();
     const schema = Yup.object({
         email: Yup.string().email('Invalid email').required('Email Address is required'),
         password: Yup.string().required('Password is required')
@@ -18,7 +20,7 @@ export default function LogIn() {
         let userService = new UserService()
         userService.logIn(values).then(response => {
             if (response.data.success) {
-
+                navigate('/dashboard');
             } else {
                 setMessage(response.data.message);
             }
