@@ -1,6 +1,6 @@
 import React from 'react'
 import ProductList from '../pages/ProductList'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import ProductDetail from '../pages/ProductDetail'
 import CartDetail from '../pages/CartDetail'
 import ProductAdd from '../pages/ProductAdd'
@@ -13,7 +13,9 @@ export default function
     return (
         <div>
             <Routes>
+                {/* public routes */}
                 <Route exact path="/" element={<LogIn />} />
+                {/* private routes ADMIN*/}
                 <Route exact path="/dashboard" element={<Dashboard />} />
                 <Route exact path="/products" element={<ProductList />}></Route>
                 <Route path="/products/:name" element={<ProductDetail />}></Route>

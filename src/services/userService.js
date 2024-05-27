@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from "../api/axios"
 
 export default class userService {
-    userAdd(user) {
-        return axios.post("http://localhost:8080/api/users/add",user)
+    userAdd(user,headers) {
+        return axios.post("users/add",user,{headers})
     }
     logIn(user) {
-        return axios.post("http://localhost:8080/api/users/getByUserControl",user)
+        return axios.post("users/login",user,{ headers: { 'Content-Type': 'application/json' } })
     }
 }

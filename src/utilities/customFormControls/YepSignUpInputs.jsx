@@ -8,8 +8,8 @@ export default function YepSignUpInputs({ ...props }) {
         <FormField error={meta.touched && !!meta.error}>
             <div className="inputs">
                 <div className="input">
-                    <img {...props} />
-                    <input {...field} {...props} />
+                    <img alt={props.alt} src={props.src} />
+                    <input {...field} name={props.name} type={props.type} placeholder={props.placeholder} />
                     {
                         props.btnType ? (
                             <Button animated type={props.btnType} onClick={props.btnOnClick}>

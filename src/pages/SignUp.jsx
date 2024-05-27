@@ -8,11 +8,17 @@ import { Formik, Form } from 'formik'
 import { Button, Label } from 'semantic-ui-react'
 import * as Yup from "yup"
 import UserService from '../services/userService'
+import { useSelector } from "react-redux";
 
 export default function SignUp() {
   const [message, setMessage] = useState("")
   const [messageStatus, setMessageStatus] = useState("")
   const initialValues = { userName: "", email: "", password: "" }
+  const token = useSelector(state => state.token.tokenItems)
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
   const schema = Yup.object({
     userName: Yup.string().required('User Name is required'),
     email: Yup.string().email('Invalid email').required('Email Address is required'),
@@ -20,7 +26,7 @@ export default function SignUp() {
   })
   const submitHandler = (values) => {
     let userService = new UserService()
-    userService.userAdd(values).then(response => { setMessage(response.data.message); setMessageStatus(response.data.success) })
+    userService.userAdd(values,headers).then(response => { setMessage(response?.data?.message); setMessageStatus(response?.data?.success) })
   }
   const generatePassword = (setFieldValue) => {
     const charset = "!@#$%^&*()0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

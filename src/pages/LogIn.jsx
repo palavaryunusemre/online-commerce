@@ -7,11 +7,18 @@ import { Button } from 'semantic-ui-react'
 import * as Yup from "yup"
 import UserService from '../services/userService'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addToken } from '../store/actions/tokenAction';
+import { Cookies } from 'react-cookie'
+
 
 export default function LogIn() {
     const [message, setMessage] = useState("")
     const initialValues = { email: "", password: "" }
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const cookies = new Cookies();
+
     const schema = Yup.object({
         email: Yup.string().email('Invalid email').required('Email Address is required'),
         password: Yup.string().required('Password is required')
@@ -19,8 +26,13 @@ export default function LogIn() {
     const submitHandler = (values) => {
         let userService = new UserService()
         userService.logIn(values).then(response => {
-            if (response.data.success) {
-                navigate('/dashboard');
+            if (response?.data?.success) {
+                if (response?.data?.data){
+                    cookies.set('autharization',response.data.data)
+                    dispatch(addToken(response.data.data))
+                    navigate('/dashboard');
+                }
+                
             } else {
                 setMessage(response.data.message);
             }
