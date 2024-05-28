@@ -17,7 +17,7 @@ export default function LogIn() {
     const initialValues = { email: "", password: "" }
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const cookies = new Cookies();
+    const cookies = new Cookies()
 
     const schema = Yup.object({
         email: Yup.string().email('Invalid email').required('Email Address is required'),
